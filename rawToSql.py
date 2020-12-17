@@ -7,8 +7,15 @@ connection = sqlite3.connect("database/drs.db")
 cursor = connection.cursor()
 print("Connection successfull!")
 
+#Dropping any previous versions of table
+try:
+    cursor.execute("DROP TABLE EXERCISE")
+    cursor.execute("DROP TABLE INGREDIENTS")
+except:
+    print("No previous table.")
+
 #SQL command to create the Exercise table
-createExerciseTable = """CREATE TABLE EXERCISE(
+createExerciseTable = '''CREATE TABLE EXERCISE (
     Date TEXT,
     Calories FLOAT,
     Steps FLOAT,
@@ -19,64 +26,64 @@ createExerciseTable = """CREATE TABLE EXERCISE(
     Minutes_of_moderate_activity INT,
     Minutes_of_intense_activity INT,
     Calories_Activity FLOAT
-)"""
+)'''
 
 #SQL command to create the Ingredients table
-createIngredientsTable = """CREATE TABLE INGREDIENTS(
+createIngredientsTable = '''CREATE TABLE INGREDIENTS (
     NDB_No INT,
     Shrt_Desc TEXT,
-    Water_(g) FLOAT,
+    Water_ FLOAT,
     Energ_Kcal INT,
-    Protein_(g) FLOAT,
-    Lipid_Tot_(g) FLOAT,
-    Ash_(g) FLOAT,
-    Carbohydrt_(g) FLOAT,
-    Fiber_TD_(g) FLOAT,
-    Sugar_Tot_(g) FLOAT,
-    Calcium_(mg) FLOAT,
-    Iron_(mg) FLOAT,
-    Magnesium_(mg) FLOAT,
-    Phosphorus_(mg) FLOAT,
-    Potassium_(mg) FLOAT,
-    Sodium_(mg) FLOAT,
-    Zinc_(mg) FLOAT,
-    Copper_mg) FLOAT,
-    Manganese_(mg) FLOAT,
-    Selenium_(µg) FLOAT,
-    Vit_C_(mg) FLOAT,
-    Thiamin_(mg) FLOAT,
-    Riboflavin_(mg) FLOAT,
-    Niacin_(mg) FLOAT,
-    Panto_Acid_mg) FLOAT,
-    Vit_B6_(mg) FLOAT,
-    Folate_Tot_(µg) FLOAT,
-    Folic_Acid_(µg) FLOAT,
-    Food_Folate_(µg) FLOAT,
-    Folate_DFE_(µg) FLOAT,
-    Choline_Tot_ (mg) FLOAT,
-    Vit_B12_(µg) FLOAT,
+    Protein_ FLOAT,
+    Lipid_Tot_ FLOAT,
+    Ash_ FLOAT,
+    Carbohydrt_ FLOAT,
+    Fiber_TD_ FLOAT,
+    Sugar_Tot_ FLOAT,
+    Calcium_ FLOAT,
+    Iron_ FLOAT,
+    Magnesium_ FLOAT,
+    Phosphorus_ FLOAT,
+    Potassium_ FLOAT,
+    Sodium_ FLOAT,
+    Zinc_ FLOAT,
+    Copper_ FLOAT,
+    Manganese_ FLOAT,
+    Selenium_ FLOAT,
+    Vit_C_ FLOAT,
+    Thiamin_ FLOAT,
+    Riboflavin_ FLOAT,
+    Niacin_ FLOAT,
+    Panto_Acid_ FLOAT,
+    Vit_B6_ FLOAT,
+    Folate_Tot_ FLOAT,
+    Folic_Acid_ FLOAT,
+    Food_Folate_ FLOAT,
+    Folate_DFE_ FLOAT,
+    Choline_Tot_ FLOAT,
+    Vit_B12_ FLOAT,
     Vit_A_IU FLOAT,
     Vit_A_RAE FLOAT,
-    Retinol_(µg) FLOAT,
-    Alpha_Carot_(µg) FLOAT,
-    Beta_Carot_(µg) FLOAT,
-    Beta_Crypt_(µg) FLOAT,
-    Lycopene_(µg) FLOAT,
-    Lut+Zea_ (µg) FLOAT,
-    Vit_E_(mg) FLOAT,
+    Retinol_ FLOAT,
+    Alpha_Carot_ FLOAT,
+    Beta_Carot_ FLOAT,
+    Beta_Crypt_ FLOAT,
+    Lycopene_ FLOAT,
+    Lut_Zea_ FLOAT,
+    Vit_E_ FLOAT,
     Vit_D_µg FLOAT,
     Vit_D_IU FLOAT,
-    Vit_K_(µg) FLOAT,
-    FA_Sat_(g) FLOAT,
-    FA_Mono_(g) FLOAT,
-    FA_Poly_(g) FLOAT,
-    Cholestrl_(mg) FLOAT,
+    Vit_K_ FLOAT,
+    FA_Sat_ FLOAT,
+    FA_Mono_ FLOAT,
+    FA_Poly_ FLOAT,
+    Cholestrl_ FLOAT,
     GmWt_1 FLOAT,
     GmWt_Desc1 TEXT,
     GmWt_2 FLOAT,
     GmWt_Desc2 TEXT,
     Refuse_Pct FLOAT 
-)"""
+)'''
 
 #executing the create Exercise table command
 print("Creating Exercise table.")
@@ -113,11 +120,16 @@ print("Inserted all the values in db!")
 print("Reading ingredients.csv file...")
 print("Inserting values in db...")
 with open("raw_datasets/ingredients.csv") as ingredientsFile:
-    i_num_records = 0
-    for row in ingredientsFile:
-        cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
-        connection.commit()
-        i_num_records += 1
+    
+    try:
+        i_num_records = 0
+        for row in ingredientsFile:
+            cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
+            connection.commit()
+            i_num_records += 1
+    except sqlite3.ProgrammingError:
+        print("An exception occured.")
+        
 print("Inserted all the values in db!")
 
 #close the connection from db
