@@ -30,6 +30,7 @@ createExerciseTable = '''CREATE TABLE EXERCISE (
 
 #SQL command to create the Ingredients table
 createIngredientsTable = '''CREATE TABLE INGREDIENTS (
+    NUM INT,
     NDB_No INT,
     Shrt_Desc TEXT,
     Water_ FLOAT,
@@ -114,23 +115,19 @@ with open("raw_datasets/exercise.csv") as exerciseFile:
         cursor.execute("INSERT INTO EXERCISE VALUES(?,?,?,?,?,?,?,?,?,?)", row.split(","))
         connection.commit()
         e_num_records += 1
-print("Inserted all the values in db!")
+    print("Inserted all the values in db!")
 
 #reading the ingredients.csv raw file and inserting it into the drs.db in Ingredients table
 print("Reading ingredients.csv file...")
 print("Inserting values in db...")
 with open("raw_datasets/ingredients.csv") as ingredientsFile:
     
-    try:
-        i_num_records = 0
-        for row in ingredientsFile:
-            cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
-            connection.commit()
-            i_num_records += 1
-    except sqlite3.ProgrammingError:
-        print("An exception occured.")
-        
-print("Inserted all the values in db!")
+    i_num_records = 0
+    for row in ingredientsFile:
+        cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
+        connection.commit()
+        i_num_records += 1
+    print("Inserted all the values in db!")
 
 #close the connection from db
 print("Disconnecting from the db...")
