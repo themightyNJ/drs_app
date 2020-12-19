@@ -16,6 +16,7 @@ except:
 
 #SQL command to create the Exercise table
 createExerciseTable = '''CREATE TABLE EXERCISE (
+    NUM INT,
     Date TEXT,
     Calories FLOAT,
     Steps FLOAT,
@@ -31,6 +32,7 @@ createExerciseTable = '''CREATE TABLE EXERCISE (
 #SQL command to create the Ingredients table
 createIngredientsTable = '''CREATE TABLE INGREDIENTS (
     NUM INT,
+    NUM2 INT,
     NDB_No INT,
     Shrt_Desc TEXT,
     Water_ FLOAT,
@@ -112,7 +114,7 @@ print("Inserting values in db...")
 with open("raw_datasets/exercise.csv") as exerciseFile:
     e_num_records = 0
     for row in exerciseFile:
-        cursor.execute("INSERT INTO EXERCISE VALUES(?,?,?,?,?,?,?,?,?,?)", row.split(","))
+        cursor.execute("INSERT INTO EXERCISE VALUES(?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
         connection.commit()
         e_num_records += 1
     print("Inserted all the values in db!")
@@ -124,7 +126,7 @@ with open("raw_datasets/ingredients.csv") as ingredientsFile:
     
     i_num_records = 0
     for row in ingredientsFile:
-        cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
+        cursor.execute("INSERT INTO INGREDIENTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row.split(","))
         connection.commit()
         i_num_records += 1
     print("Inserted all the values in db!")
